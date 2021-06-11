@@ -400,7 +400,7 @@ summary_factorlist <- function(.data,
 														 			dplyr::summarise(., chisq.test(!! sym(..1), !! sym(dependent))$p.value) %>% 
 														 				p_tidy(digits[3], "")
 														 		} else if (p_cat == "fisher"){
-														 			dplyr::summarise(., fisher.test(!! sym(..1), !! sym(dependent))$p.value) %>% 
+														 			dplyr::summarise(., fisher.test(!! sym(..1),simulate.p.value=T, !! sym(dependent))$p.value) %>% 
 														 				p_tidy(digits[3], "")
 														 		}}
 														 } else if (..2 & !..3){

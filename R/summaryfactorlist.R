@@ -102,7 +102,7 @@ summary_factorlist <- function(.data,
 															 dependent = NULL, explanatory, 
 															 cont = "mean", cont_nonpara = NULL, cont_cut = 5, cont_range = TRUE, 
 															 p = FALSE, p_cont_para = "aov", p_cat = "chisq",
-															 column = TRUE, total_col = FALSE, orderbytotal = FALSE,
+															 column = TRUE, total_col = FALSE, orderbytotal = FALSE, simulate_p = FALSE,
 															 digits = c(1, 1, 3, 1), 
 															 na_include = FALSE, na_include_dependent = FALSE, 
 															 na_complete_cases = FALSE, na_to_p = FALSE, na_to_prop = TRUE,
@@ -400,8 +400,14 @@ summary_factorlist <- function(.data,
 														 			dplyr::summarise(., chisq.test(!! sym(..1), !! sym(dependent))$p.value) %>% 
 														 				p_tidy(digits[3], "")
 														 		} else if (p_cat == "fisher"){
+																	if(simulate_p ==TRUE){
 														 			dplyr::summarise(., fisher.test(!! sym(..1),simulate.p.value=T, !! sym(dependent))$p.value) %>% 
 														 				p_tidy(digits[3], "")
+																		}
+																	else{
+																	dplyr::summarise(., fisher.test(!! sym(..1), !! sym(dependent))$p.value) %>% 
+														 				p_tidy(digits[3], "")
+																	}
 														 		}}
 														 } else if (..2 & !..3){
 														 	{if (p_cont_para == "aov"){
